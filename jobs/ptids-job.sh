@@ -1,6 +1,8 @@
 #!/bin/bash
 
-JOB_NAME="combine-variants"
+SCRIPT_NAME="ptids"
+COHORT="adni"
+JOB_NAME=${SCRIPT_NAME}-${COHORT}
 
 sbatch -J $JOB_NAME \
     --time=03-00:00:00 \
@@ -9,4 +11,4 @@ sbatch -J $JOB_NAME \
     --mem=512G \
     -o ${JOB_NAME}.out \
     -e ${JOB_NAME}.err \
-    ${JOB_NAME}.sh
+    jobs/${SCRIPT_NAME}.sh ${COHORT}

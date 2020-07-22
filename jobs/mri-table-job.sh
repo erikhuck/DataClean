@@ -11,4 +11,4 @@ sbatch -J $JOB_NAME-$COHORT \
     --mem=128G \
     -o ${JOB_NAME}-$COHORT.out \
     -e ${JOB_NAME}-$COHORT.err \
-    mri-jobs/${JOB_NAME}.sh $COHORT
+    jobs/${JOB_NAME}.sh $COHORT

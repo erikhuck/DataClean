@@ -1,0 +1,6 @@
+[submodule "ADNI_Phenotypes"]
+	path = ADNI_Phenotypes
+	url = https://github.com/erikhuck/ADNI_Phenotypes.git
+[submodule "ANM_Phenotypes"]
+	path = ANM_Phenotypes
+	url = https://github.com/erikhuck/ANM_Phenotypes.git
