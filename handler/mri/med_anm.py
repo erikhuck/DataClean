@@ -3,7 +3,7 @@
 from os import mkdir, listdir, system
 from os.path import isdir, join, split
 from shutil import rmtree
-from pickle import load as pickle_load
+from pickle import load
 
 
 def handle():
@@ -19,7 +19,7 @@ def handle():
     mkdir(med_anm_dir)
 
     # Load the dictionary that maps the ID of a given set of images to the actual patient ID
-    to_ptid: dict = pickle_load(open('../data/mri/ImageLookup.p', 'rb'))
+    to_ptid: dict = load(open('../data/mri/ImageLookup.p', 'rb'))
     assert len(to_ptid) == len(set(to_ptid.values()))
 
     # Get all the .nii files

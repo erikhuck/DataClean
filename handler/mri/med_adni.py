@@ -1,11 +1,12 @@
 """Gathers all the DICOM files and produces a workable MRI data set"""
 
 from pydicom import read_file
-from pickle import load
 from os import listdir, mkdir, system
 from os.path import join, isdir
 from shutil import rmtree
-from handler.utils import PTIDS_PICKLE_FILE, get_subdirs, MIN_SEQ_LEN
+from pandas import read_csv, DataFrame
+
+from handler.utils import PTIDS_PATH, get_subdirs, MIN_SEQ_LEN, PATIENT_ID_COL_NAME, ADNI_COHORT
 
 
 def handle():
@@ -61,8 +62,9 @@ def get_raw_files_dict() -> dict:
     """Gets a mapping of DICOM file directory type to a mapping of patient ID to DICOM file paths"""
 
     # Load the patient IDs that are shared between the genetic variants and gene expression data sets
-    with open(PTIDS_PICKLE_FILE, 'rb') as f:
-        ptids: set = load(f)
+    ptids: str = PTIDS_PATH.format(ADNI_COHORT)
+    ptids: DataFrame = read_csv(ptids)
+    ptids: set = set(ptids[PATIENT_ID_COL_NAME])
 
     # Only get the image directories, which are patient IDs, that correspond to the shared patient IDs
     data_dir: str = '../data/mri/raw-adni/'

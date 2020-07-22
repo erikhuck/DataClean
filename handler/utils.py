@@ -18,13 +18,18 @@ from ax import save as ax_save
 from ax.service.utils.instantiation import parameter_from_json
 
 # Constants
+ADNI_COHORT: str = 'adni'
 RECORDS_PICKLE_FILE: str = 'processed-data/vcf-records/records'
 PATIENT_ID_COL_NAME: str = 'PTID'
-EXPRESSION_CSV_NAME: str = 'processed-data/adni-expression.csv'
-VARIANTS_CSV_NAME: str = 'processed-data/variants/variants'
-MERGED_VARIANTS_CSV_NAME: str = 'processed-data/variants.csv'
-MRI_DATASET_PATH: str = 'processed-data/{}-mri.csv'
-PTIDS_PICKLE_FILE: str = 'processed-data/ptids.p'
+UNFILTERED_DATA_KEY: str = 'unfiltered'
+EXPRESSION_KEY: str = 'expression'
+MRI_KEY: str = 'mri'
+PHENOTYPES_KEY: str = 'phenotypes'
+DATASET_PATH: str = 'processed-data/{}-datasets/{}/{}.csv'
+COL_TYPES_PATH: str = 'processed-data/{}-datasets/{}/{}-col-types.csv'
+VARIANTS_CSV_PATH: str = 'processed-data/variants/variants'
+PTIDS_PATH: str = 'processed-data/{}-ptids.csv'
+FILTERED_DATA_KEY: str = 'filtered'
 MITO_CHROM_NUM: str = 'mito'
 RESULTS_FILE_NAME: str = 'processed-data/conv-autoencoder-results.json'
 MIN_SEQ_LEN: int = 124
@@ -33,14 +38,39 @@ H_SIZE1: int = 4
 CONV_LATENT_SIZE: int = 8000
 LIN_LATENT_SIZE: int = 12000
 LIN_AUTOENCODER_PATH: str = 'processed-data/lin-autoencoder/{}.pth'
+NUMERIC_COL_TYPE: str = 'numeric'
+
+
+def get_del_col(data_set: DataFrame, col_name: str) -> DataFrame:
+    """Obtains and deletes a column from the data set"""
+
+    col: DataFrame = data_set[[col_name]].copy()
+    del data_set[col_name]
+
+    return col
+
+
+def get_numeric_col_types(columns: list) -> DataFrame:
+    """Gets the column types for a numeric data set"""
+
+    if PATIENT_ID_COL_NAME in columns:
+        columns.remove(PATIENT_ID_COL_NAME)
+
+    n_cols: int = len(columns)
+    col_types: list = [NUMERIC_COL_TYPE] * n_cols
+    col_types: DataFrame = DataFrame(data=[col_types], columns=columns)
+    return col_types
 
 
 def normalize(df: DataFrame, is_string: bool = False) -> DataFrame:
     """Normalizes numeric columns in a data frame"""
 
-    # Remove the PTID column
-    ptid_col: DataFrame = df[[PATIENT_ID_COL_NAME]]
-    del df[PATIENT_ID_COL_NAME]
+    ptid_col = None
+    has_ptid: bool = PATIENT_ID_COL_NAME in list(df)
+
+    if has_ptid:
+        # Remove the PTID column
+        ptid_col: DataFrame = get_del_col(data_set=df, col_name=PATIENT_ID_COL_NAME)
 
     if is_string:
         df: DataFrame = DataFrame(data=df.to_numpy(dtype=float), columns=list(df))
@@ -48,8 +78,10 @@ def normalize(df: DataFrame, is_string: bool = False) -> DataFrame:
     # Normalize
     df: DataFrame = (df - df.min(axis=0)) / (df.max(axis=0) - df.min(axis=0))
 
-    # Reattach the patient ID column
-    df: DataFrame = concat([ptid_col, df], axis=1)
+    if has_ptid:
+        # Reattach the patient ID column
+        df: DataFrame = concat([ptid_col, df], axis=1)
+
     return df
 
 

@@ -10,7 +10,9 @@ from torch.nn import MSELoss
 from typing import Union
 from numpy import ndarray
 
-from handler.utils import LIN_LATENT_SIZE, LinAutoEncoder, LIN_AUTOENCODER_PATH, MRI_DATASET_PATH
+from handler.utils import (
+    LIN_LATENT_SIZE, LinAutoEncoder, LIN_AUTOENCODER_PATH, DATASET_PATH, FILTERED_DATA_KEY, MRI_KEY
+)
 
 
 def handle():
@@ -62,7 +64,7 @@ def get_data() -> tuple:
 
     batch_size: int = 1
     cohort: str = argv[4]
-    data_path: str = MRI_DATASET_PATH.format(cohort)
+    data_path: str = DATASET_PATH.format(FILTERED_DATA_KEY, cohort, MRI_KEY)
     data: DataFrame = read_csv(data_path)
     data: ndarray = data.to_numpy()
     n_cols: int = data.shape[-1]

@@ -4,7 +4,7 @@ from pandas import concat, DataFrame, read_csv
 from pickle import load
 from sys import argv
 
-from handler.utils import PATIENT_ID_COL_NAME, RECORDS_PICKLE_FILE, VARIANTS_CSV_NAME
+from handler.utils import PATIENT_ID_COL_NAME, RECORDS_PICKLE_FILE, VARIANTS_CSV_PATH
 
 
 def handle():
@@ -106,7 +106,7 @@ def handle():
     data: DataFrame = concat([patient_ids, data], axis=1)
 
     # Save the genetic variance data set
-    variants_csv_name: str = '{}{}.csv'.format(VARIANTS_CSV_NAME, arg)
+    variants_csv_name: str = '{}{}.csv'.format(VARIANTS_CSV_PATH, arg)
     data.to_csv(variants_csv_name, index=False)
 
 
