@@ -10,4 +10,4 @@ sbatch -J $JOB_NAME-$PNG_DIR \
     --mem=64G \
     -o ${JOB_NAME}-${PNG_DIR}.out \
     -e ${JOB_NAME}-${PNG_DIR}.err \
-    mri-jobs/${JOB_NAME}.sh $PNG_DIR
+    jobs/${JOB_NAME}.sh $PNG_DIR

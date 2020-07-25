@@ -9,4 +9,4 @@ sbatch -J $JOB_NAME \
     --mem=32G \
     -o ${JOB_NAME}.out \
     -e ${JOB_NAME}.err \
-    mri-jobs/${JOB_NAME}.sh
+    jobs/${JOB_NAME}.sh

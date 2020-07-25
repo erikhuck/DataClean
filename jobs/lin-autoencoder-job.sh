@@ -14,4 +14,4 @@ sbatch -J $JOB_NAME-$IDX-$COHORT \
     --mem=8G \
     -o ${JOB_NAME}-$IDX-$COHORT.out \
     -e ${JOB_NAME}-$IDX-$COHORT.err \
-    mri-jobs/${JOB_NAME}.sh $N_LAYERS $LR $COHORT $IDX
+    jobs/${JOB_NAME}.sh $N_LAYERS $LR $COHORT $IDX

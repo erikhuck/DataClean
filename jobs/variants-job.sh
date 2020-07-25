@@ -10,4 +10,4 @@ sbatch -J ${JOB_NAME}${CHROM_NUM} \
     --mem=128G \
     -o ${JOB_NAME}${CHROM_NUM}.out \
     -e ${JOB_NAME}${CHROM_NUM}.err \
-    ${JOB_NAME}.sh ${CHROM_NUM}
+    jobs/${JOB_NAME}.sh ${CHROM_NUM}

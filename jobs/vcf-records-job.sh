@@ -10,4 +10,4 @@ sbatch -J ${JOB_NAME}${CHROM_NUM} \
     --mem=64G \
     -o ${JOB_NAME}${CHROM_NUM}.out \
     -e ${JOB_NAME}${CHROM_NUM}.err \
-    ${JOB_NAME}.sh "../../../AddNeuroMed/Data/Genotypes/anm_batch_1_hg19.vcf"
+    jobs/${JOB_NAME}.sh "../../../AddNeuroMed/Data/Genotypes/anm_batch_1_hg19.vcf"

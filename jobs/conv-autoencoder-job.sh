@@ -13,4 +13,4 @@ sbatch -J $JOB_NAME-$OP-$IDX-$MRI_DIR \
     --mem=8G \
     -o ${JOB_NAME}-$OP-$IDX-$MRI_DIR.out \
     -e ${JOB_NAME}-$OP-$IDX-$MRI_DIR.err \
-    mri-jobs/${JOB_NAME}.sh --${OP} $IDX $MRI_DIR
+    jobs/${JOB_NAME}.sh --${OP} $IDX $MRI_DIR
