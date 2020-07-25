@@ -52,7 +52,7 @@ def get_unfiltered_dataset_paths(cohort: str) -> list:
     expression_path: str = DATASET_PATH.format(UNFILTERED_DATA_KEY, cohort, EXPRESSION_KEY)
     mri_path: str = DATASET_PATH.format(UNFILTERED_DATA_KEY, cohort, MRI_KEY)
     phenotypes_path: str = DATASET_PATH.format(UNFILTERED_DATA_KEY, cohort, PHENOTYPES_KEY)
-    chromosome_nums: list = [MITO_CHROM_NUM] + list(range(1, 23))
+    chromosome_nums: list = [MITO_CHROM_NUM, 23]
     csv_paths: list = [phenotypes_path, expression_path]
 
     # The MRI data set needs the patient IDs before it can be made

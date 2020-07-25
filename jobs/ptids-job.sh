@@ -5,10 +5,10 @@ COHORT="adni"
 JOB_NAME=${SCRIPT_NAME}-${COHORT}
 
 sbatch -J $JOB_NAME \
-    --time=03-00:00:00 \
+    --time=00-06:00:00 \
     --nodes=1 \
     --ntasks=1 \
-    --mem=512G \
+    --mem=256G \
     -o ${JOB_NAME}.out \
     -e ${JOB_NAME}.err \
     jobs/${SCRIPT_NAME}.sh ${COHORT}
