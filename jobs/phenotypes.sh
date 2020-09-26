@@ -1,3 +1,5 @@
+#!/bin/bash
+
 # Runs the phenotypes handler
 
 COHORT="adni"

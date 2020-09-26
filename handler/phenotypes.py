@@ -126,7 +126,7 @@ def clean_nominal_data(data_set: DataFrame, data_types: DataFrame):
 
 def clean_numeric_data(
         data_set: DataFrame, data_types: DataFrame, nominal_data: DataFrame, nominal_cols: list, impute_seed=0,
-        max_iter=50, n_nearest_features=150
+        max_iter=10, n_nearest_features=150
 ) -> DataFrame:
     """Processes the numeric data"""
 
