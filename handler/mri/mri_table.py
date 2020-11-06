@@ -10,8 +10,8 @@ from sys import argv
 
 from handler.utils import (
     MRIDataset, get_img_from_path, MIN_SEQ_LEN, get_conv_autoencoder_hyperparameters, get_conv_autoencoder_path,
-    Autoencoder, PATIENT_ID_COL_NAME, CONV_LATENT_SIZE, normalize, UNFILTERED_DATA_KEY, DATASET_PATH, COL_TYPES_PATH,
-    MRI_KEY, get_numeric_col_types
+    Autoencoder, PATIENT_ID_COL_NAME, CONV_LATENT_SIZE, normalize, DATASET_PATH, COL_TYPES_PATH, MRI_KEY,
+    get_numeric_col_types
 )
 
 
@@ -119,10 +119,10 @@ def save_data_set(ptid_to_slice_sequence: dict, cohort: str):
 
     # Get and save the column types CSV
     col_types: DataFrame = get_numeric_col_types(columns=columns)
-    col_types_path: str = COL_TYPES_PATH.format(UNFILTERED_DATA_KEY, cohort, MRI_KEY)
+    col_types_path: str = COL_TYPES_PATH.format(cohort, MRI_KEY)
     col_types.to_csv(col_types_path, index=False)
 
     # Save the MRI tabular data set
     print('Saving Table...')
-    mri_path: str = DATASET_PATH.format(UNFILTERED_DATA_KEY, cohort, MRI_KEY)
+    mri_path: str = DATASET_PATH.format(cohort, MRI_KEY)
     dataset.to_csv(mri_path, index=False)

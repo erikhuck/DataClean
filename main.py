@@ -7,14 +7,12 @@ from handler.variants import handle as variants_handle
 from handler.expression import handle as expression_handle
 from handler.phenotypes import handle as phenotypes_handle
 from handler.mri.conv_autoencoder import handle as conv_autoencoder_handle
-from handler.mri.lin_autoencoder import handle as lin_autoencoder_handle
 from handler.mri.mri_table import handle as mri_table_handle
 from handler.mri.med_adni import handle as med_adni_mri_handle
 from handler.mri.med_anm import handle as med_anm_mri_handle
 from handler.mri.png import handle as png_mri_handle
 from handler.mri.mri import handle as mri_handle
 from handler.ptids import handle as ptids_handle
-from handler.filter import handle as filter_handle
 
 
 def main():
@@ -31,8 +29,6 @@ def main():
         phenotypes_handle()
     elif handler == 'conv-autoencoder':
         conv_autoencoder_handle()
-    elif handler == 'lin-autoencoder':
-        lin_autoencoder_handle()
     elif handler == 'mri-table':
         mri_table_handle()
     elif handler == 'med-adni-mri':
@@ -45,8 +41,6 @@ def main():
         mri_handle()
     elif handler == 'ptids':
         ptids_handle()
-    elif handler == 'filter':
-        filter_handle()
 
 
 if __name__ == '__main__':

@@ -6,8 +6,8 @@ from pandas import DataFrame, read_csv
 from os.path import isfile
 
 from handler.utils import (
-    PATIENT_ID_COL_NAME, PTIDS_PATH, DATASET_PATH, UNFILTERED_DATA_KEY, EXPRESSION_KEY, MRI_KEY, PHENOTYPES_KEY,
-    MITO_CHROM_NUM, VARIANTS_CSV_PATH
+    PATIENT_ID_COL_NAME, PTIDS_PATH, DATASET_PATH, EXPRESSION_KEY, MRI_KEY, PHENOTYPES_KEY, MITO_CHROM_NUM,
+    VARIANTS_CSV_PATH
 )
 
 
@@ -49,9 +49,9 @@ def get_ptids(csv_paths: list) -> DataFrame:
 def get_unfiltered_dataset_paths(cohort: str) -> list:
     """Gets the paths of all the data sets from which to combine all their patient IDs"""
 
-    expression_path: str = DATASET_PATH.format(UNFILTERED_DATA_KEY, cohort, EXPRESSION_KEY)
-    mri_path: str = DATASET_PATH.format(UNFILTERED_DATA_KEY, cohort, MRI_KEY)
-    phenotypes_path: str = DATASET_PATH.format(UNFILTERED_DATA_KEY, cohort, PHENOTYPES_KEY)
+    expression_path: str = DATASET_PATH.format(cohort, EXPRESSION_KEY)
+    mri_path: str = DATASET_PATH.format(cohort, MRI_KEY)
+    phenotypes_path: str = DATASET_PATH.format(cohort, PHENOTYPES_KEY)
     chromosome_nums: list = [MITO_CHROM_NUM, 23]
     csv_paths: list = [phenotypes_path, expression_path]
 

@@ -10,8 +10,7 @@ from sklearn.experimental import enable_iterative_imputer
 from sklearn.impute import IterativeImputer, SimpleImputer
 
 from handler.utils import (
-    PATIENT_ID_COL_NAME, NUMERIC_COL_TYPE, normalize, DATASET_PATH, COL_TYPES_PATH, PHENOTYPES_KEY, UNFILTERED_DATA_KEY,
-    get_del_col
+    PATIENT_ID_COL_NAME, NUMERIC_COL_TYPE, normalize, DATASET_PATH, COL_TYPES_PATH, PHENOTYPES_KEY, get_del_col
 )
 
 
@@ -44,9 +43,9 @@ def handle():
     # Finally add the patient ID column back on so the phenotype data can be joined with other data
     data_set: DataFrame = concat([ptid_col, data_set], axis=1)
 
-    phenotypes_path: str = DATASET_PATH.format(UNFILTERED_DATA_KEY, cohort, PHENOTYPES_KEY)
+    phenotypes_path: str = DATASET_PATH.format(cohort, PHENOTYPES_KEY)
     data_set.to_csv(phenotypes_path, index=False)
-    col_types_path: str = COL_TYPES_PATH.format(UNFILTERED_DATA_KEY, cohort, PHENOTYPES_KEY)
+    col_types_path: str = COL_TYPES_PATH.format(cohort, PHENOTYPES_KEY)
     col_types.to_csv(col_types_path, index=False)
 
 

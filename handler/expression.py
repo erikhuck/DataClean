@@ -3,8 +3,7 @@
 from pandas import DataFrame, read_csv, Series, notna
 
 from handler.utils import (
-    DATASET_PATH, PATIENT_ID_COL_NAME, normalize, UNFILTERED_DATA_KEY, EXPRESSION_KEY, get_numeric_col_types,
-    COL_TYPES_PATH, ADNI_COHORT
+    DATASET_PATH, PATIENT_ID_COL_NAME, normalize, EXPRESSION_KEY, get_numeric_col_types, COL_TYPES_PATH, ADNI_COHORT
 )
 
 
@@ -43,7 +42,7 @@ def handle():
 
     # Save the column types CSV and the data set
     col_types: DataFrame = get_numeric_col_types(columns=list(data))
-    col_types_path: str = COL_TYPES_PATH.format(UNFILTERED_DATA_KEY, ADNI_COHORT, EXPRESSION_KEY)
+    col_types_path: str = COL_TYPES_PATH.format(ADNI_COHORT, EXPRESSION_KEY)
     col_types.to_csv(col_types_path, index=False)
-    expression_path: str = DATASET_PATH.format(UNFILTERED_DATA_KEY, ADNI_COHORT, EXPRESSION_KEY)
+    expression_path: str = DATASET_PATH.format(ADNI_COHORT, EXPRESSION_KEY)
     data.to_csv(expression_path, index=False)

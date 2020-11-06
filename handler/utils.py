@@ -21,23 +21,19 @@ from ax.service.utils.instantiation import parameter_from_json
 ADNI_COHORT: str = 'adni'
 RECORDS_PICKLE_FILE: str = 'processed-data/vcf-records/records'
 PATIENT_ID_COL_NAME: str = 'PTID'
-UNFILTERED_DATA_KEY: str = 'unfiltered'
 EXPRESSION_KEY: str = 'expression'
 MRI_KEY: str = 'mri'
 PHENOTYPES_KEY: str = 'phenotypes'
-DATASET_PATH: str = 'processed-data/{}-datasets/{}/{}.csv'
-COL_TYPES_PATH: str = 'processed-data/{}-datasets/{}/{}-col-types.csv'
+DATASET_PATH: str = 'processed-data/datasets/{}/{}.csv'
+COL_TYPES_PATH: str = 'processed-data/datasets/{}/{}-col-types.csv'
 VARIANTS_CSV_PATH: str = 'processed-data/variants/variants'
 PTIDS_PATH: str = 'processed-data/{}-ptids.csv'
-FILTERED_DATA_KEY: str = 'filtered'
 MITO_CHROM_NUM: str = 'mito'
 RESULTS_FILE_NAME: str = 'processed-data/conv-autoencoder-results.json'
 MIN_SEQ_LEN: int = 124
 LATENT_KERNEL_SIZE: int = 3
 H_SIZE1: int = 4
 CONV_LATENT_SIZE: int = 8000
-LIN_LATENT_SIZE: int = 12000
-LIN_AUTOENCODER_PATH: str = 'processed-data/lin-autoencoder/{}.pth'
 NUMERIC_COL_TYPE: str = 'numeric'
 
 
