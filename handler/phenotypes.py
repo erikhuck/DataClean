@@ -19,9 +19,9 @@ def handle():
 
     # Load in the raw data set and the table that indicates the data type of each column
     cohort: str = argv[2]
-    data_path: str = '{}_Phenotypes/ToCSV/raw-data-set.csv'.format(cohort.upper())
+    data_path: str = 'MergeTables/ToCSV/raw-data-set.csv'.format(cohort.upper())
     data_set: DataFrame = read_csv(data_path, low_memory=False)
-    col_types_path: str = '{}_Phenotypes/ToCSV/col-types.csv'.format(cohort.upper())
+    col_types_path: str = 'MergeTables/ToCSV/col-types.csv'.format(cohort.upper())
     col_types: DataFrame = read_csv(col_types_path, low_memory=False)
 
     data_set, col_types = get_mappings(data_set=data_set, col_types=col_types, cohort=cohort)
