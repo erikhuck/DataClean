@@ -15,7 +15,7 @@ def handle():
     """Main method of this module"""
 
     cohort: str = argv[2]
-    csv_paths: list = get_unfiltered_dataset_paths(cohort=cohort)
+    csv_paths: list = get_dataset_paths(cohort=cohort)
     ptids: DataFrame = get_ptids(csv_paths=csv_paths)
     ptids.to_csv(PTIDS_PATH.format(cohort), index=False)
 
@@ -46,18 +46,24 @@ def get_ptids(csv_paths: list) -> DataFrame:
     return intersect_ptids
 
 
-def get_unfiltered_dataset_paths(cohort: str) -> list:
+def get_dataset_paths(cohort: str) -> list:
     """Gets the paths of all the data sets from which to combine all their patient IDs"""
 
     expression_path: str = DATASET_PATH.format(cohort, EXPRESSION_KEY)
     mri_path: str = DATASET_PATH.format(cohort, MRI_KEY)
     phenotypes_path: str = DATASET_PATH.format(cohort, PHENOTYPES_KEY)
+
     chromosome_nums: list = [MITO_CHROM_NUM, 23]
+    chromosome_paths: list = ['{}{}.csv'.format(VARIANTS_CSV_PATH, num) for num in chromosome_nums]
+
     csv_paths: list = [phenotypes_path, expression_path]
 
     # The MRI data set needs the patient IDs before it can be made
     if isfile(mri_path):
         csv_paths.append(mri_path)
 
-    csv_paths: list = csv_paths + ['{}{}.csv'.format(VARIANTS_CSV_PATH, num) for num in chromosome_nums]
+    # Additionally, the genetic variants data sets are optional
+    if isfile(chromosome_paths[0]):
+        csv_paths += chromosome_paths
+
     return csv_paths
