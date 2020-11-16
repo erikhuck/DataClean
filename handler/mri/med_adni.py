@@ -119,7 +119,8 @@ def get_raw_files_dict() -> dict:
                 sagirfspgr_path: str = join(ptid_path, img_dir)
             elif (
                     'adnirmpragerepea' == new_dir or img_dir == 'REPEAT_SAG_3D_MPRAGE'
-                    or img_dir == 'ADNI_______MPRAGE_#2' or img_dir == 'ADNI_______MPRAGEREPEAT'
+                    or img_dir == 'ADNI_______MPRAGE_#2' or img_dir == 'ADNI_______MPRAGE'
+                    or img_dir == 'ADNI_______MPRAGEREPEAT'
             ):
                 # Handle some especially unusual exceptions in naming conventions
                 exceptions_path: str = join(ptid_path, img_dir)
