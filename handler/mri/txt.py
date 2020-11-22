@@ -14,21 +14,21 @@ from handler.utils import MIN_SEQ_LEN
 def handle():
     """Main method of this module"""
 
-    png_dir: str = argv[-1]
-    mri_dir: str = '../data/mri/mri-' + png_dir
-    png_dir: str = '../data/mri/png-' + png_dir
+    cohort: str = argv[-1]
+    txt_dir: str = '../data/mri/txt-' + cohort
+    png_dir: str = '../data/mri/png-' + cohort
 
-    if isdir(mri_dir):
-        rmtree(mri_dir)
+    if isdir(txt_dir):
+        rmtree(txt_dir)
 
-    mkdir(mri_dir)
+    mkdir(txt_dir)
     png_ptid_dirs: list = listdir(png_dir)
 
     for ptid in png_ptid_dirs:
         png_ptid_dir: str = join(png_dir, ptid)
-        mri_ptid_dir: str = join(mri_dir, ptid)
-        assert not isdir(mri_ptid_dir)
-        mkdir(mri_ptid_dir)
+        txt_ptid_dir: str = join(txt_dir, ptid)
+        assert not isdir(txt_ptid_dir)
+        mkdir(txt_ptid_dir)
 
         # Ensure the PNG files are read as a sequence trimmed to a consistent sequence length
         png_files: list = trim_sequence(seq=sorted(listdir(png_ptid_dir)))
@@ -37,7 +37,7 @@ def handle():
             png: str = join(png_ptid_dir, png)
             png: PngImageFile = open(png).convert('L')
             png: ndarray = asarray(png)
-            save_img_as_txt(img=png, txt_dir=mri_ptid_dir, txt_idx=i)
+            save_img_as_txt(img=png, txt_dir=txt_ptid_dir, txt_idx=i)
 
 
 def trim_sequence(seq: list) -> list:
