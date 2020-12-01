@@ -29,7 +29,7 @@ COL_TYPES_PATH: str = 'processed-data/datasets/{}/{}-col-types.csv'
 VARIANTS_CSV_PATH: str = 'processed-data/variants/variants'
 PTIDS_PATH: str = 'processed-data/{}-ptids.csv'
 MITO_CHROM_NUM: str = 'mito'
-RESULTS_FILE_NAME: str = 'processed-data/conv-autoencoder-results.json'
+RESULTS_FILE_NAME: str = 'processed-data/conv-autoencoder-results-{}.json'
 MIN_SEQ_LEN: int = 124
 LATENT_KERNEL_SIZE: int = 3
 H_SIZE1: int = 4
@@ -148,10 +148,10 @@ def get_img_from_path(img_path: str) -> Tensor:
     return img
 
 
-def get_conv_autoencoder_hyperparameters() -> dict:
+def get_conv_autoencoder_hyperparameters(mri_idx) -> dict:
     """Returns the tuned hyperparameters of the convolutional autoencoder"""
 
-    with open(RESULTS_FILE_NAME, 'r') as f:
+    with open(RESULTS_FILE_NAME.format(mri_idx), 'r') as f:
         tuning_results: dict = json.load(f)
 
     hyperparameters: dict = tuning_results['hyperparameters']
@@ -341,10 +341,12 @@ class Autoencoder(Module):
         return x
 
 
-def tune_hyperparameters(hyperparameters: list, evaluation_func: callable, n_trials: int, n_init_trials: int = 3):
+def tune_hyperparameters(
+    hyperparameters: list, evaluation_func: callable, n_trials: int, mri_idx: int, n_init_trials: int = 3
+):
     """Tunes hyperparameters for an objective function"""
 
-    exp_file_path: str = 'processed-data/tuning-experiment.json'
+    exp_file_path: str = 'processed-data/tuning-experiment-{}.json'.format(mri_idx)
 
     if not isfile(exp_file_path):
         # Convert the parameters to a form usable by ax
@@ -379,56 +381,3 @@ def tune_hyperparameters(hyperparameters: list, evaluation_func: callable, n_tri
         ax_save(experiment=exp, filepath=exp_file_path)
 
     return best_arm.parameters, values
-
-
-class LinAutoEncoder(Module):
-    """Auto encodes linear input"""
-
-    def __init__(self, n_layers: int, in_out_size: int, latent_size: int):
-        super().__init__()
-
-        decoder_layer_sizes: list = LinAutoEncoder.get_layer_sizes(
-            n_layers=n_layers, in_size=in_out_size, out_size=latent_size
-        )
-        encoder_layer_sizes: list = list(reversed(decoder_layer_sizes))
-        self.encoder: Module = LinAutoEncoder.get_layers(layer_sizes=encoder_layer_sizes, is_decoder=False)
-        self.decoder: Module = LinAutoEncoder.get_layers(layer_sizes=decoder_layer_sizes, is_decoder=True)
-
-    def forward(self, x: Tensor):
-        """Forward function for the Linear Auto Encoder module"""
-
-        x: Tensor = self.encoder(x)
-        x: Tensor = self.decoder(x)
-        return x
-
-    @staticmethod
-    def get_layer_sizes(n_layers: int, in_size: int, out_size: int) -> list:
-        """Gets a list of the sizes of each layer in the autoencoder"""
-
-        step: float = (in_size - out_size) / n_layers
-        layer_sizes: list = list(arange(start=out_size, stop=in_size, step=step)) + [in_size]
-
-        for i, layer_size in enumerate(layer_sizes):
-            layer_sizes[i] = int(layer_size)
-
-        return layer_sizes
-
-    @staticmethod
-    def get_layers(layer_sizes: list, is_decoder: bool) -> Sequential:
-        """Gets the sequence of linear layers in a neural network"""
-
-        layers: list = []
-        n_layers: int = len(layer_sizes) - 1
-
-        for i in range(n_layers):
-            layer_size1: int = layer_sizes[i]
-            layer_size2: int = layer_sizes[i + 1]
-            layer: Module = Linear(layer_size1, layer_size2)
-            layers.append(layer)
-
-            if i < n_layers - 1:
-                layers.append(LeakyReLU())
-            elif is_decoder:
-                layers.append(Sigmoid())
-
-        return Sequential(*layers)

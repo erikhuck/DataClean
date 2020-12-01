@@ -28,7 +28,7 @@ def handle():
 
     if mode == '--train':
         # Get the tuned hyperparameters
-        hyperparameters: dict = get_conv_autoencoder_hyperparameters()
+        hyperparameters: dict = get_conv_autoencoder_hyperparameters(mri_idx=mri_idx)
         _train_model(**hyperparameters, mri_idx=mri_idx, mri_dir=mri_dir, train=True)
     elif mode == '--tune':
         # Define the hyperparameters to tune
@@ -52,10 +52,10 @@ def handle():
 
         # Optimize the hyperparameters and get the best hyperparameters
         best_parameters, values = tune_hyperparameters(
-            hyperparameters=parameters, evaluation_func=train_model, n_trials=5
+            hyperparameters=parameters, evaluation_func=train_model, mri_idx=mri_idx, n_trials=5
         )
 
-        handle_results(best_parameters=best_parameters, values=values)
+        handle_results(best_parameters=best_parameters, values=values, mri_idx=mri_idx)
     else:
         raise ValueError('No valid command provided. Choices are --train or --tune')
 
@@ -156,15 +156,15 @@ def to_img(x: Tensor) -> Tensor:
     return x.cpu().data
 
 
-def handle_results(best_parameters: dict, values: tuple):
+def handle_results(best_parameters: dict, values: tuple, mri_idx: int):
     """Updates the results from a previous run if they have improved"""
 
     new_loss: float = values[0]['objective']
-
+    results_file_name: str = RESULTS_FILE_NAME.format(mri_idx)
     objective_key: str = 'loss'
 
-    if isfile(RESULTS_FILE_NAME):
-        with open(RESULTS_FILE_NAME, 'r') as f:
+    if isfile(results_file_name):
+        with open(results_file_name, 'r') as f:
             old_results: dict = load(f)
         old_loss: float = old_results[objective_key]
 
@@ -176,7 +176,7 @@ def handle_results(best_parameters: dict, values: tuple):
         can_overwrite: bool = True
 
     if can_overwrite:
-        with open(RESULTS_FILE_NAME, 'w') as f:
+        with open(results_file_name, 'w') as f:
             results: dict = {
                 objective_key: new_loss,
                 'hyperparameters': best_parameters
