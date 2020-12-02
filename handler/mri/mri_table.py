@@ -20,12 +20,13 @@ def handle():
 
     cohort: str = argv[-1]
     img_paths_by_idx: dict = get_img_paths_by_idx(mri_dir=cohort)
-    hyperparameters: dict = get_conv_autoencoder_hyperparameters()
-    n_repeats: int = hyperparameters['n_repeats']
-    use_skip: bool = hyperparameters['use_skip'] == 'true'
     ptid_to_slice_sequence: dict = {}
 
     for mri_idx, img_paths in tqdm(img_paths_by_idx.items()):
+        hyperparameters: dict = get_conv_autoencoder_hyperparameters(mri_idx=mri_idx)
+        n_repeats: int = hyperparameters['n_repeats']
+        use_skip: bool = hyperparameters['use_skip'] == 'true'
+
         ptid_to_path: dict = get_ptid_to_path(img_paths=img_paths)
 
         # Load the trained model for the given MRI slice index

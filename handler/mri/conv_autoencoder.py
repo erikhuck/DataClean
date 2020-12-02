@@ -52,7 +52,7 @@ def handle():
 
         # Optimize the hyperparameters and get the best hyperparameters
         best_parameters, values = tune_hyperparameters(
-            hyperparameters=parameters, evaluation_func=train_model, mri_idx=mri_idx, n_trials=5
+            hyperparameters=parameters, evaluation_func=train_model, mri_idx=mri_idx, n_trials=20
         )
 
         handle_results(best_parameters=best_parameters, values=values, mri_idx=mri_idx)
@@ -88,7 +88,7 @@ def _train_model(
 
         os.mkdir(decoded_img_dir)
 
-    num_epochs: int = 1000 if train else 1
+    num_epochs: int = 1000 if train else 5
     batch_size: int = 1
 
     dataset: Dataset = MRIDataset(mri_idx=mri_idx, mri_dir=mri_dir)

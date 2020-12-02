@@ -29,7 +29,7 @@ COL_TYPES_PATH: str = 'processed-data/datasets/{}/{}-col-types.csv'
 VARIANTS_CSV_PATH: str = 'processed-data/variants/variants'
 PTIDS_PATH: str = 'processed-data/{}-ptids.csv'
 MITO_CHROM_NUM: str = 'mito'
-RESULTS_FILE_NAME: str = 'processed-data/conv-autoencoder-results-{}.json'
+RESULTS_FILE_NAME: str = 'processed-data/conv-autoencoder-results/{}.json'
 MIN_SEQ_LEN: int = 124
 LATENT_KERNEL_SIZE: int = 3
 H_SIZE1: int = 4
@@ -81,14 +81,13 @@ def normalize(df: DataFrame, is_string: bool = False) -> DataFrame:
     return df
 
 
-def get_conv_autoencoder_path(mri_idx: int, mri_dir: str, train: bool = True):
+def get_conv_autoencoder_path(mri_idx: int, mri_dir: str):
     """Gets the path to the trained convolutional autoencoder for a given MRI splice index and a given cohort"""
 
     model_dir: str = './processed-data/conv-autoencoder'
 
-    if train:
-        if not isdir(model_dir):
-            mkdir(model_dir)
+    if not isdir(model_dir):
+        mkdir(model_dir)
 
     path: str = '{}/{}-{}.pth'.format(model_dir, mri_idx, mri_dir)
     return path
@@ -113,7 +112,7 @@ class MRIDataset(Dataset):
 
     def __init__(self, mri_idx: int, mri_dir: str):
         self.img_paths: list = []
-        mri_dir: str = '../data/mri/mri-' + mri_dir
+        mri_dir: str = '../data/mri/txt-' + mri_dir
         ptid_dirs: set = get_subdirs(directory=mri_dir)
 
         for ptid_dir in ptid_dirs:
@@ -346,7 +345,7 @@ def tune_hyperparameters(
 ):
     """Tunes hyperparameters for an objective function"""
 
-    exp_file_path: str = 'processed-data/tuning-experiment-{}.json'.format(mri_idx)
+    exp_file_path: str = 'processed-data/tuning-experiments/{}.json'.format(mri_idx)
 
     if not isfile(exp_file_path):
         # Convert the parameters to a form usable by ax
