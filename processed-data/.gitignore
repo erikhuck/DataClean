@@ -3,3 +3,5 @@
 !datasets/
 !feat-maps/
 !dc-img/
+!conv-autoencoder-results/
+!tuning-experiments/
