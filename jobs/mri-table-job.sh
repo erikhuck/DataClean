@@ -1,7 +1,7 @@
 #!/bin/bash
 
 JOB_NAME="mri-table"
-COHORT="anm"
+COHORT="adni"
 
 sbatch -J $JOB_NAME-$COHORT \
     --time=00-12:00:00 \

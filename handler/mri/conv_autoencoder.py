@@ -41,7 +41,7 @@ def handle():
             {
                 'name': 'n_repeats',
                 'type': 'range',
-                'bounds': [1, 5]
+                'bounds': [3, 5]
             },
             {
                 'name': 'use_skip',
@@ -88,7 +88,7 @@ def _train_model(
 
         os.mkdir(decoded_img_dir)
 
-    num_epochs: int = 1000 if train else 5
+    num_epochs: int = 800 if train else 25
     batch_size: int = 1
 
     dataset: Dataset = MRIDataset(mri_idx=mri_idx, mri_dir=mri_dir)
