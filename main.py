@@ -13,12 +13,14 @@ from handler.mri.med_anm import handle as med_anm_mri_handle
 from handler.mri.png import handle as png_mri_handle
 from handler.mri.txt import handle as txt_mri_handle
 from handler.ptids import handle as ptids_handle
+from handler.combine import handle as combine_handle
 
 
 def main():
     """Main method of repository"""
 
     handler: str = argv[1]
+
     if handler == 'vcf-records':
         vcf_records_handle()
     elif handler == 'variants':
@@ -41,6 +43,8 @@ def main():
         txt_mri_handle()
     elif handler == 'ptids':
         ptids_handle()
+    elif handler == 'combine':
+        combine_handle()
 
 
 if __name__ == '__main__':
