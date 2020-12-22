@@ -6,7 +6,7 @@ IDX=$2
 MRI_DIR="adni"
 
 sbatch -J $JOB_NAME-$OP-$IDX-$MRI_DIR \
-    --time=02-00:00:00 \
+    --time=03-00:00:00 \
     --gres=gpu:1 \
     --nodes=1 \
     --ntasks=1 \
