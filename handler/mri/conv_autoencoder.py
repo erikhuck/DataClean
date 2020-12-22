@@ -88,7 +88,7 @@ def _train_model(
 
         os.mkdir(decoded_img_dir)
 
-    num_epochs: int = 800 if train else 25
+    num_epochs: int = 450 if train else 25
     batch_size: int = 1
 
     dataset: Dataset = MRIDataset(mri_idx=mri_idx, mri_dir=mri_dir)
