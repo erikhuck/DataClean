@@ -1,6 +1,5 @@
 """Combines the data sets into one"""
 
-from os.path import join
 from sys import argv
 
 from pandas import DataFrame, merge, concat, read_csv, Series
@@ -12,7 +11,6 @@ def handle():
 
     cohort: str = argv[2]
     dataset: str = argv[3]
-    mri_path: str = argv[4]
 
     phenotypes_data_name: str = 'phenotypes'
     expression_data_name: str = 'expression'
@@ -21,15 +19,7 @@ def handle():
     # Load the data
     phenotypes_data, phenotypes_col_types = load_data(data_name=phenotypes_data_name, cohort=cohort)
     expression_data, expression_col_types = load_data(data_name=expression_data_name, cohort=cohort)
-
-    if mri_path is not None:
-        mri_data: DataFrame = read_csv(mri_path)
-        mri_col_types_path: list = mri_path.split('/')
-        mri_col_types_path[-1] = mri_col_types_path[-1].replace('data', 'col-types')
-        mri_col_types_path: str = join(*mri_col_types_path)
-        mri_col_types: DataFrame = read_csv(mri_col_types_path)
-    else:
-        mri_data, mri_col_types = load_data(data_name=mri_data_name, cohort=cohort)
+    mri_data, mri_col_types = load_data(data_name=mri_data_name, cohort=cohort)
 
     # Merge the data sets by PTID
     combined_data: DataFrame = merge(phenotypes_data, expression_data, on=PATIENT_ID_COL_NAME, how='inner')
@@ -68,7 +58,7 @@ def load_data(data_name: str, cohort: str) -> tuple:
 def normalize(df: DataFrame) -> DataFrame:
     """Normalizes the data"""
 
-    ptid_col: DataFrame = get_del_col(df)
+    ptid_col: DataFrame = get_del_col(data_set=df, col_name=PATIENT_ID_COL_NAME)
     df: DataFrame = (df - df.min(axis=0)) / (df.max(axis=0) - df.min(axis=0))
     df: DataFrame = concat([ptid_col, df], axis=1)
     return df
