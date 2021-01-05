@@ -8,7 +8,8 @@ from sys import argv
 from PIL.Image import open
 from PIL.PngImagePlugin import PngImageFile
 from shutil import rmtree
-from handler.utils import MIN_SEQ_LEN
+
+from handler.mri.utils import MIN_SEQ_LEN
 
 
 def handle():
@@ -53,7 +54,7 @@ def trim_sequence(seq: list) -> list:
 def save_img_as_txt(img: ndarray, txt_dir: str, txt_idx: int):
     """Saves a pixel array in a TXT file"""
 
-    img_size: tuple = (192, 192)
+    img_size: tuple = (128, 128)
 
     # Resize the image such that its dimensions are consistent with the other images
     img: ndarray = resize(img, img_size, interpolation=INTER_LANCZOS4)

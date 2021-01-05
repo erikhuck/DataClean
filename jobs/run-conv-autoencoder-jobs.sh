@@ -1,7 +1,6 @@
 #!/bin/bash
-OP=$1
 
 for i in {0..123}
 do
-    bash jobs/conv-autoencoder-job.sh $OP $i
+    bash jobs/conv-autoencoder-job.sh $i
 done

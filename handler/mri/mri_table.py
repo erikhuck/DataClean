@@ -8,10 +8,9 @@ from pandas import DataFrame
 from tqdm import tqdm
 from sys import argv
 
-from handler.utils import (
-    MRIDataset, get_img_from_path, MIN_SEQ_LEN, get_conv_autoencoder_hyperparameters, get_conv_autoencoder_path,
-    Autoencoder, PATIENT_ID_COL_NAME, CONV_LATENT_SIZE, normalize, DATASET_PATH, COL_TYPES_PATH, MRI_KEY,
-    get_numeric_col_types
+from handler.utils import PATIENT_ID_COL_NAME, normalize, DATASET_PATH, COL_TYPES_PATH, MRI_KEY, get_numeric_col_types
+from handler.mri.utils import (
+    MRIDataset, get_img_from_path, MIN_SEQ_LEN, Autoencoder, CONV_LATENT_SIZE, get_conv_autoencoder_path
 )
 
 
@@ -23,14 +22,10 @@ def handle():
     ptid_to_slice_sequence: dict = {}
 
     for mri_idx, img_paths in tqdm(img_paths_by_idx.items()):
-        hyperparameters: dict = get_conv_autoencoder_hyperparameters(mri_idx=mri_idx)
-        n_repeats: int = hyperparameters['n_repeats']
-        use_skip: bool = hyperparameters['use_skip'] == 'true'
-
         ptid_to_path: dict = get_ptid_to_path(img_paths=img_paths)
 
         # Load the trained model for the given MRI slice index
-        model: Module = get_autoencoder(mri_idx=mri_idx, mri_dir=cohort, n_repeats=n_repeats, use_skip=use_skip)
+        model: Module = get_autoencoder(mri_idx=mri_idx, mri_dir=cohort)
         empty_cache()
 
         with no_grad():
@@ -73,10 +68,10 @@ def get_ptid_to_path(img_paths: list) -> dict:
     return ptid_to_path
 
 
-def get_autoencoder(mri_idx: str, mri_dir: str, n_repeats: int, use_skip: bool) -> Module:
+def get_autoencoder(mri_idx: str, mri_dir: str) -> Module:
     """Gets the autoencoder for a given MRI splice index"""
 
-    model: Module = Autoencoder(n_repeats=n_repeats, use_skip=use_skip)
+    model: Module = Autoencoder()
     saved_model_path: str = get_conv_autoencoder_path(mri_idx=mri_idx, mri_dir=mri_dir)
     model.load_state_dict(load(saved_model_path))
     model.cuda()
@@ -107,7 +102,6 @@ def save_data_set(ptid_to_slice_sequence: dict, cohort: str):
     for ptid, slice_sequence in ptid_to_slice_sequence.items():
         row: list = [slice_sequence[idx] for idx in range(len(slice_sequence))]
         row: list = [ptid] + cat(row, dim=0).tolist()
-        # TODO: if the linear autoencoder is available, use it to compress the data set further
         assert len(row) == MIN_SEQ_LEN * CONV_LATENT_SIZE + 1
         dataset.append(row)
 

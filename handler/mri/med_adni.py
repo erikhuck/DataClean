@@ -6,7 +6,8 @@ from os.path import join, isdir
 from shutil import rmtree
 from pandas import read_csv, DataFrame
 
-from handler.utils import PTIDS_PATH, get_subdirs, MIN_SEQ_LEN, PATIENT_ID_COL_NAME, ADNI_COHORT
+from handler.utils import PTIDS_PATH, get_subdirs, PATIENT_ID_COL_NAME, ADNI_COHORT
+from handler.mri.utils import MIN_SEQ_LEN
 
 
 def handle():
